@@ -1,4 +1,5 @@
 {
   "dependencies": {
+    "com.unity.modules.physics": "1.0.0"
   }
 }
