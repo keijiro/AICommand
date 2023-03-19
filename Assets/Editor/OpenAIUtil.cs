@@ -21,13 +21,17 @@ static class OpenAIUtil
 
     public static string InvokeChat(string prompt)
     {
+        var settings = AICommandSettings.instance;
+
         // POST
         using var post = UnityWebRequest.Post
           (OpenAI.Api.Url, CreateChatRequestBody(prompt), "application/json");
 
+        // Request timeout setting
+        post.timeout = settings.timeout;
+
         // API key authorization
-        post.SetRequestHeader
-          ("Authorization", "Bearer " + AICommandSettings.instance.apiKey);
+        post.SetRequestHeader("Authorization", "Bearer " + settings.apiKey);
 
         // Request start
         var req = post.SendWebRequest();
