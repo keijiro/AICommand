@@ -20,6 +20,7 @@ public sealed class AICommandWindow : EditorWindow
       => "Write a Unity Editor script.\n" +
          " - It provides its functionality as a menu item placed \"Edit\" > \"Do Task\".\n" +
          " - It doesn’t provide any editor window. It immediately does the task when the menu item is invoked.\n" +
+         " - You shouldn’t use GameObject.FindGameObjectsWithTag.\n" +
          " - I only need the script body. Don’t add any explanation.\n" +
          "The task is described the following:\n" + input;
 
