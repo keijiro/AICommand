@@ -29,3 +29,17 @@ from those successes and failures, which is this project's main aim.
 This is just a proof-of-concept project, so there is no standard way to install
 it in other projects. If you want to try it with your project anyway, you can
 simply copy the `Assets/Editor` directory to your project.
+
+### AICommandWindow throws NullReferenceException
+
+Probably your OpenAI trial period has expired. Please check your billing status.
+See [AIShader issue #1] for details.
+
+[AIShader Issue #1]: https://github.com/keijiro/AIShader/issues/1
+
+### I pressed the "Run" button, resulting in compilation errors.
+
+In many cases, ChatGPT fails to implement your command correctly. You might get
+the correct one by repeatedly pressing the "Run" button.
+
+(That's why I don't think this PoC is practical...)
