@@ -20,13 +20,14 @@ You can open the AI Command window from Window > AI Command.
 
 Unity 2022.2 or later
 
-## FAQ
+## Frequently asked questions
 
 ### Is it practical?
 
-**No.** I created this proof-of-concept and proved that it doesn't work yet. It
-works nicely in some cases and fails very poorly in others. I got several ideas
-from those successes and failures, which is this project's main aim.
+**Definitely no!** I created this proof-of-concept and proved that it doesn't
+work yet. It works nicely in some cases and fails very poorly in others. I got
+several ideas from those successes and failures, which is this project's main
+aim.
 
 ### Can I install this to my project?
 
@@ -46,4 +47,4 @@ See [AIShader issue #1] for details.
 In many cases, ChatGPT fails to implement your command correctly. You might get
 the correct one by repeatedly pressing the "Run" button.
 
-(That's why I don't think this PoC is practical...)
+(That's why I think this PoC is impractical...)
