@@ -35,7 +35,7 @@ public sealed class AICommandWindow : EditorWindow
 
     void RunGenerator()
     {
-        var code = OpenAIUtil.InvokeChat(WrapPrompt(_prompt));
+        var code = OpenAIUtil.InvokeChat(WrapPrompt(_prompt), _modelType);
         Debug.Log("AI command script:" + code);
         CreateScriptAsset(code);
     }
@@ -45,6 +45,8 @@ public sealed class AICommandWindow : EditorWindow
     #region Editor GUI
 
     string _prompt = "Create 100 cubes at random points.";
+    
+    ModelType _modelType = ModelType.gpt_3_5_turbo;
 
     const string ApiKeyErrorText =
       "API Key hasn't been set. Please check the project settings " +
@@ -61,6 +63,11 @@ public sealed class AICommandWindow : EditorWindow
         if (IsApiKeyOk)
         {
             _prompt = EditorGUILayout.TextArea(_prompt, GUILayout.ExpandHeight(true));
+            _modelType = (ModelType)EditorGUILayout.EnumPopup("Model To Use", _modelType);
+            
+            if (_modelType == ModelType.gpt_4)
+                EditorGUILayout.HelpBox("Ensure you have approved API access to GPT-4, or the command will fail!", MessageType.Info);
+
             if (GUILayout.Button("Run")) RunGenerator();
         }
         else
