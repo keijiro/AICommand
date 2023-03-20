@@ -16,6 +16,10 @@ You must exclude the directory when sharing your project with others.
 
 You can open the AI Command window from Window > AI Command.
 
+## System requirements
+
+Unity 2022.2 or later
+
 ## FAQ
 
 ### Is it practical?
