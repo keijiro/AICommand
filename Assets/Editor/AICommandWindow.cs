@@ -29,9 +29,13 @@ public sealed class AICommandWindow : EditorWindow
          " - It provides its functionality as a menu item placed \"Edit\" > \"Do Task\".\n" +
          " - It doesn’t provide any editor window. It immediately does the task when the menu item is invoked.\n" +
          " - Don’t use GameObject.FindGameObjectsWithTag.\n" +
-         " - There is no selected object. Find game objects manually.\n" +
+         " - include using UnityEditor.\n" +
+         " - include using UnityEngine.\n" +
+         " - include using UnityEditor.SceneManagement.\n" +
+         " - inslude using UnityEngine.SceneManagement. \n" +
+         " - There is no selected objects. Find game objects manually.\n" +
          " - I only need the script body. Don’t add any explanation.\n" +
-         "The task is described as follows:\n" + input;
+         "The task is described the following:\n" + input;
 
     void RunGenerator()
     {
