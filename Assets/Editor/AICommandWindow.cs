@@ -25,22 +25,37 @@ public sealed class AICommandWindow : EditorWindow
     #region Script generator
 
     static string WrapPrompt(string input)
-      => "Write a Unity Editor script.\n" +
-         " - It provides its functionality as a menu item placed \"Edit\" > \"Do Task\".\n" +
-         " - It doesn’t provide any editor window. It immediately does the task when the menu item is invoked.\n" +
-         " - Don’t use GameObject.FindGameObjectsWithTag.\n" +
-         " - There is no selected object. Find game objects manually.\n" +
-         " - I only need the script body. Don’t add any explanation.\n" +
-         "The task is described as follows:\n" + input;
+      => "Write a Unity Editor script with the following specifications:\n" +
+         " - The script should provide its functionality as a menu item placed in the \"Edit\" menu, with the label \"Do Task\".\n" +
+         " - The script should not create or utilize any editor windows. Instead, the designated task should be executed immediately when the menu item is invoked.\n" +
+         " - Do not use GameObject.FindGameObjectsWithTag in the script.\n" +
+         " - The script should not rely on a currently selected object. Instead, find the relevant game objects manually within the script.\n" +
+         " - Provide only the body of the script without any additional explanations or comments.\n" +
+         "The task for the script to perform is described as follows:\n" + input;
 
     void RunGenerator()
     {
         var code = OpenAIUtil.InvokeChat(WrapPrompt(_prompt));
+        code = PostProcessGeneratedCode(code); // Add this line
         Debug.Log("AI command script:" + code);
         CreateScriptAsset(code);
     }
 
     #endregion
+
+    private string PostProcessGeneratedCode(string code)
+    {
+        // Remove unexpected characters
+        code = code.Replace("`", "");
+
+        // Make sure the script starts with 'using' statements or a namespace declaration
+        if (!code.TrimStart().StartsWith("using") && !code.TrimStart().StartsWith("namespace"))
+        {
+            code = "using UnityEngine;\nusing UnityEditor;\n\n" + code;
+        }
+
+        return code;
+    }
 
     #region Editor GUI
 
@@ -78,6 +93,11 @@ public sealed class AICommandWindow : EditorWindow
 
     void OnDisable()
       => AssemblyReloadEvents.afterAssemblyReload -= OnAfterAssemblyReload;
+
+    void OnDestroy()
+    {
+      AssemblyReloadEvents.afterAssemblyReload -= OnAfterAssemblyReload;
+    }
 
     void OnAfterAssemblyReload()
     {
