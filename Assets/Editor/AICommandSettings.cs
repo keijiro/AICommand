@@ -1,48 +1,46 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace AICommand
+namespace AICommand {
+
+[FilePath("UserSettings/AICommandSettings.asset",
+          FilePathAttribute.Location.ProjectFolder)]
+public sealed class AICommandSettings : ScriptableSingleton<AICommandSettings>
 {
+    public string apiKey = null;
+    public int timeout = 0;
+    public void Save() => Save(true);
+    void OnDisable() => Save();
+}
 
-    [FilePath("UserSettings/AICommandSettings.asset",
-              FilePathAttribute.Location.ProjectFolder)]
-    public sealed class AICommandSettings : ScriptableSingleton<AICommandSettings>
+sealed class AICommandSettingsProvider : SettingsProvider
+{
+    public AICommandSettingsProvider()
+      : base("Project/AI Command", SettingsScope.Project) {}
+
+    public override void OnGUI(string search)
     {
-        public string apiKey = null;
-        public int timeout = 0;
-        public void Save() => Save(true);
-        void OnDisable() => Save();
-    }
+        var settings = AICommandSettings.instance;
 
-    sealed class AICommandSettingsProvider : SettingsProvider
-    {
-        public AICommandSettingsProvider()
-          : base("Project/AI Command", SettingsScope.Project) { }
+        var key = settings.apiKey;
+        var timeout = settings.timeout;
 
-        public override void OnGUI(string search)
+        EditorGUI.BeginChangeCheck();
+
+        key = EditorGUILayout.TextField("API Key", key);
+        timeout = EditorGUILayout.IntField("Timeout", timeout);
+
+        if (EditorGUI.EndChangeCheck())
         {
-            var settings = AICommandSettings.instance;
-
-            var key = settings.apiKey;
-            var timeout = settings.timeout;
-
-            EditorGUI.BeginChangeCheck();
-
-            key = EditorGUILayout.TextField("API Key", key);
-            timeout = EditorGUILayout.IntField("Timeout", timeout);
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                // settings.autoExecute = autoExecute;
-                settings.apiKey = key;
-                settings.timeout = timeout;
-                settings.Save();
-            }
+            settings.apiKey = key;
+            settings.timeout = timeout;
+            settings.Save();
         }
-
-        [SettingsProvider]
-        public static SettingsProvider CreateCustomSettingsProvider()
-          => new AICommandSettingsProvider();
     }
+
+    [SettingsProvider]
+    public static SettingsProvider CreateCustomSettingsProvider()
+      => new AICommandSettingsProvider();
+}
 
 } // namespace AICommand
