@@ -72,7 +72,7 @@ namespace AICommand
             name = name.Replace(":", "");
             name = name.Replace(".", "");
             name = name.Replace(" ", "");
-            name = name.Replace("ex: ", "");
+            if(name == "ExPlayerMovement") name = "PlayerMovement";
             if (name.Length == 0) name = defaultName;
             if (name.Length > 50) name = name.Substring(0, 50);
             return name;
@@ -92,7 +92,7 @@ namespace AICommand
         #region Editor GUI
 
         string _assetName = "ex: Player Movement";
-        string _prompt = "Control player using arrowkeys to move and space to jump.";
+        string _prompt = "Move Player using arrowkeys.";
 
         const string ApiKeyErrorText =
           "API Key hasn't been set. Please check the project settings " +
