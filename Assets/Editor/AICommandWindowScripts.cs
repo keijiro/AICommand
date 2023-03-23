@@ -11,9 +11,7 @@ namespace AICommand
     public sealed class AICommandWindowScripts : EditorWindow
     {
         #region Script file operations
-        const string basePath = "Assets/Meus AI Assets/";
-        const string ContextFilePath = "Assets/Meus AI Assets/context.txt";
-        bool ContextFileExists => System.IO.File.Exists(ContextFilePath);
+        const string basePath = "Assets/MyAIScripts/";
         string time = "";
         string objectName = "";
 
@@ -43,6 +41,10 @@ namespace AICommand
         static string WrapPrompt(string input, string name, bool useContext)
         {
             string previousContext = "";
+            if(!File.Exists(basePath)){
+                Directory.CreateDirectory(basePath);
+            }
+
             if (File.Exists(basePath + name + ".cs")) previousContext = System.IO.File.ReadAllText(basePath + name + ".cs");
 
             return
@@ -73,7 +75,6 @@ namespace AICommand
             name = name.Replace("ex: ", "");
             if (name.Length == 0) name = defaultName;
             if (name.Length > 50) name = name.Substring(0, 50);
-            if (name == "DigiteONomeDoAssetExEmpilharBlocos") name = "EmpilharBlocos";
             return name;
         }
         async void GenerateScript()
@@ -83,16 +84,7 @@ namespace AICommand
             var code = OpenAIUtil.InvokeChat(WrapPrompt(_prompt, name, true));
             string status = await CreateScriptAsset(code, name);
 
-
-            //to automatically add the script to the object
-            // var go = GameObject.Find(objectName);
-
-            // if (go != null)
-            // {
-            //     System.Type CustomType = System.Type.GetType(name + ",Assembly-CSharp");
-            //     GameObject source_gameObject = source as GameObject;
-            //     source_gameObject.AddComponent(CustomType);
-            // }
+            //todo: automatically add the script to the object
 
         }
 
