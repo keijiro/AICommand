@@ -54,7 +54,10 @@ public sealed class AIGenerateScriptWindow : EditorWindow
 
     #region Editor GUI
 
-    string _prompt = "Create 100 cubes at random points.";
+    string _prompt = "Create a script that enables a player to move a gameobject with physics based movement \n" +
+                     "The player should be able to walk, run and jump \n" +
+                     "The player should be have a camera gameobject following them that moves smoothly and can be rotated with the mouse \n" +
+                     "The camera should be able to orbit the player and the player should move in the direction the camera is facing";
 
     const string ApiKeyErrorText =
       "API Key hasn't been set. Please check the project settings " +
