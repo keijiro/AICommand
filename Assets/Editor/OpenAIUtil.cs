@@ -24,11 +24,23 @@ static class OpenAIUtil
         var settings = AICommandSettings.instance;
 
         // POST
-        using var post = UnityWebRequest.Post
-          (OpenAI.Api.Url, CreateChatRequestBody(prompt), "application/json");
+        var jsonBody = CreateChatRequestBody(prompt);
+        #if UNITY_2022_1_OR_NEWER
+		using var post = UnityWebRequest.Post
+          (OpenAI.Api.Url, jsonBody, "application/json");
+        #else
+        // Make a Web Request, the long way
+        // The simpler .Post() does not seem to work, results in OpenAI API failure to recognize JSON
+		//using var post = UnityWebRequest.Post(OpenAI.Api.Url, jsonBody);
+		byte[] jsonRaw = System.Text.Encoding.UTF8.GetBytes(jsonBody);
+		using var post = new UnityWebRequest
+            (OpenAI.Api.Url, "POST", new DownloadHandlerBuffer(), new UploadHandlerRaw(jsonRaw));
+		// Set Content-Type to json
+        post.SetRequestHeader("Content-Type", "application/json");
+        #endif
 
-        // Request timeout setting
-        post.timeout = settings.timeout;
+		// Request timeout setting
+		post.timeout = settings.timeout;
 
         // API key authorization
         post.SetRequestHeader("Authorization", "Bearer " + settings.apiKey);
